@@ -1,35 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useCountStore } from "./store";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // 구조 분해 할당
+  // 스토어 내부의 값이 업데이트 되면 해당 store를 구독하고 있는 모든 컴포넌트가 리렌더링 => 성능 약화
+  // const { count, increaseCount, decreaseCount } = useCountStore();
+
+  // selector 함수
+  // 선택적으로 상태를 가져올수 있어 불필요한 렌더링 최소화
+  const count = useCountStore((state) => state.count);
+  const increaseCount = useCountStore((state) => state.increaseCount);
+  const decreaseCount = useCountStore((state) => state.decreaseCount);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <a>현재 카운트 : {count}</a>
+      <br />
+      <button onClick={increaseCount}>+</button>
+      <br />
+      <button onClick={decreaseCount}>-</button>
+    </div>
+  );
 }
 
-export default App
+export default App;
